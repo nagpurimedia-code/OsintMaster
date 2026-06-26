@@ -17,10 +17,10 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot, Me
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, CallbackContext
 
 # ---------------- CONFIG ----------------
-BOT_TOKEN = "YOUR_BOT_TOKEN"
-BOT_USERNAME = "YOUR_BOT_USERNAME"        # provided by you (no @)
-BUY_CREDITS_USERNAME = "YOUR_USERNAME" # contact username (no @)
-ADMIN_IDS = [YOUR_ADMINS_IDS]               # admin numeric IDs
+BOT_TOKEN = "8683758815:AAH-COooZyxmEqf4GEwaZvalR8plZBa_ISY"
+BOT_USERNAME = "Osint_X_Master_Bot"        # provided by you (no @)
+BUY_CREDITS_USERNAME = "ColdenMinjBot" # contact username (no @)
+ADMIN_IDS = [8329296967]               # admin numeric IDs
 
 # core settings
 REFERRAL_BONUS = 2
@@ -37,7 +37,7 @@ CODES_FILE = "redeem_codes.json"
 BACKUP_META = "backup_meta.json"
 
 # API endpoints (as provided)
-PHONE_IN_API = "https://yourapi.com/phone_in?number={num}"
+PHONE_IN_API = "https://calculation-garage-lynn-kingdom.trycloudflare.com/search?q={num}"
 PHONE_PK_API = "https://yourapi.com/phone_pk?number={num}"
 AADHAAR_API = "https://yourapi.com/aadhaar?id={aadhaar}"
 FAMILY_AADHAAR_API = "https://yourapi.com/family?id={aadhaar}"
@@ -189,7 +189,7 @@ def send_backup_to_admins() -> bool:
 
 # ---------------- Styled UI text ----------------
 WELCOME_TEXT = (
-    "👋 *𝗛𝗶 {name} — 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝘁𝗼 𝗙𝗞𝗦 𝗢𝗦𝗜𝗡𝗧 𝗕𝗢𝗧 ⚡*\n\n"
+    "👋 *𝗛𝗶 {name} — WELCOME TO OSINT MASTER BOT ⚡*\n\n"
     "💡 *Educational & lawful OSINT use only.*\n"
     "📚 Use findings responsibly — do not harass, doxx, or commit illegal acts We Are Not Responsible For Anything Illigal.\n\n"
     "🔐 *Credits:* Each search costs *1 credit*.\n"
@@ -199,7 +199,7 @@ WELCOME_TEXT = (
 ).format(name="{name}", owner=BUY_CREDITS_USERNAME)
 
 HELP_TEXT = (
-    "📘 *FKS OSINT Assistant — Help Center*\n\n"
+    "📘 *OSINT MASTER Assistant — Help Center*\n\n"
     "🔍 *Available Searches:*\n"
     "• Phone (India / Pakistan)\n"
     "• Aadhaar (family details when available)\n"
