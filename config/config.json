@@ -1,10 +1,12 @@
 {
   "bot_token": "8683758815:AAEaj5k3hJXEUUlFcywvixtuOx5QF_pnqzg",
   "api_url": "https://num-to-info-bot-api.vercel.app/api/index.js",
-  "admin_ids": [123456789],
+  "admin_ids": [8329296967],
   "channels": {
-    "channel_1": "@HYPERMXPRIVATE",
-    "channel_2": "@HYPERMX_PRO"
+    "channel_1_name": "Join Group",
+    "channel_1_link": "https://t.me/+4pinRKA0NstjODdl",
+    "channel_2_name": "Join Channel", 
+    "channel_2_link": "https://t.me/+B-EcXBa3GfVjOWY1"
   },
   "settings": {
     "max_lookups_per_day": 10,
