@@ -18,8 +18,12 @@ messages = load_json_file('config/messages.json')
 
 BOT_TOKEN = config.get('bot_token', '')
 ADMIN_IDS = config.get('admin_ids', [])
-CHANNEL_1 = config.get('channels', {}).get('channel_1', '@HYPERMXPRIVATE')
-CHANNEL_2 = config.get('channels', {}).get('channel_2', '@HYPERMX_PRO')
+
+# Private channel/group links
+CHANNEL_1_NAME = config.get('channels', {}).get('channel_1_name', 'Channel 1')
+CHANNEL_1_LINK = config.get('channels', {}).get('channel_1_link', '')
+CHANNEL_2_NAME = config.get('channels', {}).get('channel_2_name', 'Channel 2')
+CHANNEL_2_LINK = config.get('channels', {}).get('channel_2_link', '')
 
 # Global state
 user_state = {}
@@ -61,20 +65,27 @@ def get_updates(offset=None):
 # ============ KEYBOARD FUNCTIONS ============
 
 def create_access_keyboard():
-    """Create access required keyboard"""
-    return {
-        "inline_keyboard": [
-            [
-                {"text": "📌 JOIN @HYPERMXPRIVATE", "url": f"https://t.me/{CHANNEL_1.replace('@', '')}"}
-            ],
-            [
-                {"text": "📌 JOIN @HYPERMX_PRO", "url": f"https://t.me/{CHANNEL_2.replace('@', '')}"}
-            ],
-            [
-                {"text": "✅ Verify", "callback_data": "verify"}
-            ]
-        ]
-    }
+    """Create access required keyboard with private links"""
+    keyboard_buttons = []
+    
+    # Add first channel/group button
+    if CHANNEL_1_LINK:
+        keyboard_buttons.append([
+            {"text": f"📌 JOIN {CHANNEL_1_NAME}", "url": CHANNEL_1_LINK}
+        ])
+    
+    # Add second channel/group button
+    if CHANNEL_2_LINK:
+        keyboard_buttons.append([
+            {"text": f"📌 JOIN {CHANNEL_2_NAME}", "url": CHANNEL_2_LINK}
+        ])
+    
+    # Add verify button
+    keyboard_buttons.append([
+        {"text": "✅ Verify", "callback_data": "verify"}
+    ])
+    
+    return {"inline_keyboard": keyboard_buttons}
 
 def create_main_keyboard():
     """Create main menu keyboard"""
@@ -263,11 +274,16 @@ def main():
     """Main bot loop"""
     log_info("🤖 Bot is starting...")
     log_info(f"📊 Admin IDs: {ADMIN_IDS}")
+    log_info(f"📌 Channel 1: {CHANNEL_1_NAME}")
+    log_info(f"📌 Channel 2: {CHANNEL_2_NAME}")
     log_info(f"🔗 API URL: {config.get('api_url', 'Not set')}")
     
     if not BOT_TOKEN:
         log_error("❌ BOT_TOKEN is empty! Please set your bot token.")
         return
+    
+    if not CHANNEL_1_LINK or not CHANNEL_2_LINK:
+        log_warning("⚠️ Channel links not set in config.json")
     
     # Start health check server
     health_thread = threading.Thread(target=run_health_server, daemon=True)
