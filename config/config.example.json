@@ -1,0 +1,15 @@
+{
+  "bot_token": "8683758815:AAFKsl444hVYdvby2engUOini2_iJw0gZ_8",
+  "api_url": "https://num-to-info-bot-api.vercel.app/api/index.js",
+  "admin_ids": [123456789],
+  "channels": {
+    "channel_1": "@HYPERMXPRIVATE",
+    "channel_2": "@HYPERMX_PRO"
+  },
+  "settings": {
+    "max_lookups_per_day": 10,
+    "enable_logging": true,
+    "maintenance_mode": false,
+    "port": 10000
+  }
+}
