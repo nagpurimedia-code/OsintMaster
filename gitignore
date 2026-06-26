@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Data files
+data/*.json
+!data/.gitkeep
+logs/*.log
+!logs/.gitkeep
+
+# Config (sensitive)
+config/config.json
+!config/config.example.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
