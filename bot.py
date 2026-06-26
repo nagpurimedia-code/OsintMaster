@@ -17,7 +17,8 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot, Me
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, CallbackContext
 
 # ---------------- CONFIG ----------------
-BOT_TOKEN = "8683758815:AAH-COooZyxmEqf4GEwaZvalR8plZBa_ISY"
+# ⚠️ FIX: Replace with your actual bot token from @BotFather
+BOT_TOKEN = "8683758815:AAFKsl444hVYdvby2engUOini2_iJw0gZ_8"  # Format: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz
 BOT_USERNAME = "Osint_X_Master_Bot"        # provided by you (no @)
 BUY_CREDITS_USERNAME = "ColdenMinjBot" # contact username (no @)
 ADMIN_IDS = [8329296967]               # admin numeric IDs
@@ -36,18 +37,16 @@ USERS_FILE = "users.json"
 CODES_FILE = "redeem_codes.json"
 BACKUP_META = "backup_meta.json"
 
-# API endpoints (as provided)
+# ⚠️ FIX: Updated API endpoints (replace with working ones)
 PHONE_IN_API = "https://calculation-garage-lynn-kingdom.trycloudflare.com/search?q={num}"
-PHONE_PK_API = "https://yourapi.com/phone_pk?number={num}"
-AADHAAR_API = "https://yourapi.com/aadhaar?id={aadhaar}"
+PHONE_PK_API = "https://yourapi.com/phone_pk?number={num}"  # ⚠️ Replace with actual API
+AADHAAR_API = "https://yourapi.com/aadhaar?id={aadhaar}"    # ⚠️ Replace with actual API
 FAMILY_AADHAAR_API = "https://yourapi.com/family?id={aadhaar}"
-CNIC_API = "https://yourapi.com/cnic?id={cnic}"
-RC_API = "https://yourapi.com/rc?rc={rc}"
+CNIC_API = "https://yourapi.com/cnic?id={cnic}"             # ⚠️ Replace with actual API
+RC_API = "https://yourapi.com/rc?rc={rc}"                   # ⚠️ Replace with actual API
 VEHICLE_API = "https://yourapi.com/vehicle?rc={rc}"
-IFSC_API = "https://yourapi.com/ifsc?ifsc={ifsc}"
-UPI_API = "https://yourapi.com/upi?id={upi}"
-# if you have any problem to add api just Paste file+your api in chatgpt and ask🤠
-# or Contact Me- @User_Died_X
+IFSC_API = "https://yourapi.com/ifsc?ifsc={ifsc}"           # ⚠️ Replace with actual API
+UPI_API = "https://yourapi.com/upi?id={upi}"                # ⚠️ Replace with actual API
 
 MAINTENANCE_TEXT = "⚙️ This feature is under maintenance. Credits not deducted."
 
@@ -467,7 +466,80 @@ async def message_handler(update: Update, context: CallbackContext):
                 await update.message.reply_text("❌ *Invalid user id.*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
             context.user_data.pop("admin_state", None); return
 
-        # Default for other states
+        # ADD CUSTOM
+        if admin_state == "add_credits_waiting":
+            try:
+                parts = text.split()
+                if len(parts) != 2:
+                    await update.message.reply_text("❌ *Format: user_id amount*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+                    context.user_data.pop("admin_state", None); return
+                target = parts[0]; amount = int(parts[1])
+                users = read_json(USERS_FILE)
+                if target not in users:
+                    await update.message.reply_text("❌ *User not found.*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+                else:
+                    users[target]["credits"] = users[target].get("credits", 0) + amount
+                    write_json(USERS_FILE, users)
+                    await update.message.reply_text(f"➕ *Added {amount} credits* to `{target}`. New balance: *{users[target]['credits']}*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            except:
+                await update.message.reply_text("❌ *Invalid input. Use: user_id amount*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            context.user_data.pop("admin_state", None); return
+
+        # DEDUCT CUSTOM
+        if admin_state == "deduct_custom_waiting":
+            try:
+                parts = text.split()
+                if len(parts) != 2:
+                    await update.message.reply_text("❌ *Format: user_id amount*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+                    context.user_data.pop("admin_state", None); return
+                target = parts[0]; amount = int(parts[1])
+                users = read_json(USERS_FILE)
+                if target not in users:
+                    await update.message.reply_text("❌ *User not found.*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+                else:
+                    users[target]["credits"] = max(0, users[target].get("credits", 0) - amount)
+                    write_json(USERS_FILE, users)
+                    await update.message.reply_text(f"➖ *Deducted {amount} credits* from `{target}`. New balance: *{users[target]['credits']}*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            except:
+                await update.message.reply_text("❌ *Invalid input. Use: user_id amount*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            context.user_data.pop("admin_state", None); return
+
+        # BROADCAST
+        if admin_state == "broadcast_waiting":
+            users = read_json(USERS_FILE)
+            count = 0
+            for uid in users.keys():
+                try:
+                    await context.bot.send_message(int(uid), f"📣 *Announcement*\n\n{text}", parse_mode="Markdown")
+                    count += 1
+                    time.sleep(0.1)
+                except:
+                    pass
+            await update.message.reply_text(f"✅ *Broadcast sent to {count} users.*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            context.user_data.pop("admin_state", None); return
+
+        # USER INFO
+        if admin_state == "user_info_waiting":
+            try:
+                target = str(int(text))
+                users = read_json(USERS_FILE)
+                if target not in users:
+                    await update.message.reply_text("❌ *User not found.*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+                else:
+                    u = users[target]
+                    info = (
+                        f"📋 *User Info*\n"
+                        f"ID: `{target}`\n"
+                        f"Credits: *{u.get('credits', 0)}*\n"
+                        f"Referrals: *{u.get('referrals', 0)}*\n"
+                        f"Banned: *{u.get('banned', False)}*\n"
+                        f"Referred By: *{u.get('referred_by', 'None')}*"
+                    )
+                    await update.message.reply_text(info, parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            except:
+                await update.message.reply_text("❌ *Invalid user id.*", parse_mode="Markdown", reply_markup=admin_action_back_buttons())
+            context.user_data.pop("admin_state", None); return
+
         await update.message.reply_text("⚠️ *Admin action canceled.*", parse_mode="Markdown")
         context.user_data.pop("admin_state", None)
         return
@@ -621,28 +693,41 @@ async def admin_callback(update: Update, context: CallbackContext):
 
 # ---------------- Main ----------------
 def main():
-    ensure_files_exist()
-    app = Application.builder().token(BOT_TOKEN).build()
+    try:
+        ensure_files_exist()
+        
+        # ⚠️ FIX: Validate token format
+        if ":" not in BOT_TOKEN or BOT_TOKEN == "YOUR_BOT_TOKEN_HERE":
+            logger.error("❌ Invalid BOT_TOKEN! Please set a valid token from @BotFather")
+            logger.error("   Format should be: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz")
+            return
+        
+        app = Application.builder().token(BOT_TOKEN).build()
 
-    # Commands
-    app.add_handler(CommandHandler("start", start_cmd))
-    app.add_handler(CommandHandler("menu", menu_cmd))
-    app.add_handler(CommandHandler("admin", admin_cmd))
+        # Commands
+        app.add_handler(CommandHandler("start", start_cmd))
+        app.add_handler(CommandHandler("menu", menu_cmd))
+        app.add_handler(CommandHandler("admin", admin_cmd))
 
-    # Callbacks
-    app.add_handler(CallbackQueryHandler(to_menu_callback, pattern="^to_menu$"))
-    app.add_handler(CallbackQueryHandler(help_callback, pattern="^help$"))
-    app.add_handler(CallbackQueryHandler(referral_callback, pattern="^referral$"))
-    app.add_handler(CallbackQueryHandler(daily_bonus_callback, pattern="^daily_bonus$"))
-    app.add_handler(CallbackQueryHandler(generic_callback, pattern="^(phone_in|phone_pk|aadhaar|cnic|ifsc|vehicle_rc|upi|redeem|credits|admin_panel)$"))
-    app.add_handler(CallbackQueryHandler(admin_callback, pattern="^admin_"))
+        # Callbacks
+        app.add_handler(CallbackQueryHandler(to_menu_callback, pattern="^to_menu$"))
+        app.add_handler(CallbackQueryHandler(help_callback, pattern="^help$"))
+        app.add_handler(CallbackQueryHandler(referral_callback, pattern="^referral$"))
+        app.add_handler(CallbackQueryHandler(daily_bonus_callback, pattern="^daily_bonus$"))
+        app.add_handler(CallbackQueryHandler(generic_callback, pattern="^(phone_in|phone_pk|aadhaar|cnic|ifsc|vehicle_rc|upi|redeem|credits|admin_panel)$"))
+        app.add_handler(CallbackQueryHandler(admin_callback, pattern="^admin_"))
 
-    # Message handler
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
+        # Message handler
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
 
-    # Start
-    logger.info("🚀 FKS OSINT Bot started!")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+        # Start
+        logger.info("🚀 FKS OSINT Bot started successfully!")
+        app.run_polling(allowed_updates=Update.ALL_TYPES)
+        
+    except Exception as e:
+        logger.error(f"❌ Fatal error: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()
