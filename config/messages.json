@@ -1,0 +1,41 @@
+{
+  "access_required": "🔐 <b>ACCESS REQUIRED</b>\n\n<b>MR ≡ HERO, pehle dono channels join karo!</b>\n\n<b>Step 1:</b> @HYPERMXPRIVATE join karo\n<b>Step 2:</b> @HYPERMX_PRO join karo\n<b>Step 3:</b> \"Verify\" dabaо\n\nJoin buttons dabaо, fir Verify karo",
+  
+  "welcome_verified": "🚀 <b>Welcome to Number X Details Bot!</b>\n━━━━━━━━━━━━━━━━━━\nI can lookup phone numbers using external API.\n\n📱 Click the button below to get started.\n🔐 Free Unlimited Use\n\n<b>Developed by:</b> @ColdenMinjBot\n━━━━━━━━━━━━━━━━━━",
+  
+  "verification_success": "✅ <b>Verification Successful!</b>\n\nNow you can use the Phone Lookup feature.\nClick the button below to get started.",
+  
+  "enter_number": "📞 Send 10 digit mobile number:\n(e.g., 9912345678)",
+  
+  "invalid_number": "❌ Invalid number! Please send exactly 10 digits.\nExample: 9912345678",
+  
+  "searching": "🔍 Searching for number: <b>{number}</b>\n⏳ Please wait...",
+  
+  "no_info": "❌ No information found for this number.",
+  
+  "api_error": "❌ API Error: Status {status}\nPlease try again later.",
+  
+  "timeout_error": "❌ API request timed out. Please try again.",
+  
+  "connection_error": "❌ Cannot connect to API server. Please try again later.",
+  
+  "banned": "⛔ You are banned from using this bot.",
+  
+  "unknown_command": "❌ Unknown command. Please use the menu buttons.",
+  
+  "admin_only": "⛔ You are not authorized to use admin commands.",
+  
+  "ban_prompt": "Please enter the user ID to ban:\n(e.g., 123456789)",
+  
+  "unban_prompt": "Please enter the user ID to unban:\n(e.g., 123456789)",
+  
+  "ban_success": "✅ User {user_id} has been banned.",
+  
+  "unban_success": "✅ User {user_id} has been unbanned.",
+  
+  "invalid_user_id": "❌ Invalid user ID. Please enter a valid number.",
+  
+  "no_banned_users": "📋 No banned users.",
+  
+  "back_to_main": "Returning to main menu."
+}
